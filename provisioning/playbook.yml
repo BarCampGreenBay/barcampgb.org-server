@@ -3,6 +3,7 @@
   sudo: yes
   gather_facts: yes
   vars:
+    app_path: /var/www/barcampgb.org/src
     api:
       service: bcgb-api
       description: BarCamp Green Bay api server

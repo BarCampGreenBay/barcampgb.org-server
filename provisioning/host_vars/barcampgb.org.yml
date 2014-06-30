@@ -1,4 +1,3 @@
 ---
-app_path: /var/www/barcampgb.org
 node_env: production
 node_path: /usr/bin/env node
