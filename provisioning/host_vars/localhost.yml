@@ -1,4 +1,5 @@
 ---
-app_path: /vagrant/src
+app_path: /var/www/barcampgb.org
 node_env: development
 node_path: /usr/bin/env node-dev
+user: vagrant

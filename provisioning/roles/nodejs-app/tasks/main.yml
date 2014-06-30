@@ -1,3 +1,14 @@
 ---
+- name: Install git to pull app code
+  apt: name=git state=present
+
+- name: Create app directory
+  file: path=/var/www/barcampgb.org owner=nodejs group=nodejs
+
+- name: Pull app code
+  git: repo=https://github.com/BarCampGreenBay/barcampgb.org.git dest=/var/www/barcampgb.org accept_hostkey=yes
+  remote_user: nodejs
+  sudo: no
+
 - name: Install node app dependencies
   npm: path={{ app_path }}
