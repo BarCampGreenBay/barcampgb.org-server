@@ -3,17 +3,18 @@
   sudo: yes
   gather_facts: yes
   vars:
-    app_path: /var/www/barcampgb.org/src
+    app_path: /var/www/barcampgb.org
+    app_repo: https://github.com/BarCampGreenBay/barcampgb.org.git
     api:
       service: bcgb-api
       description: BarCamp Green Bay api server
-      path: api
+      path: src/api
       script: server.js
       port: 8000
     web:
       service: bcgb-web
       description: BarCamp Green Bay web server
-      path: web
+      path: src/web
       script: server.js
       port: 8002
 
