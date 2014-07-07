@@ -47,6 +47,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # information on available options.
 
   # kick off provisioner (uses ansible locally)
-  config.vm.provision "shell", path: "provisioning/vagrant-bootstrap.sh"
+  config.vm.provision "shell", path: "provisioning/vagrant-bootstrap.sh", keep_color: true
 
 end

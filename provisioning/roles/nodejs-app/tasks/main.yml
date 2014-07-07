@@ -14,6 +14,11 @@
   notify: restart nodejs-service
   sudo_user: nodejs
 
+- name: Stat bower.json
+  stat: path={{ app_path }}/bower.json
+  register: bower_json
+
 - name: Install bower dependencies
   command: bower install --allow-root chdir={{ app_path }}
   sudo_user: nodejs
+  when: bower_json.stat.exists
