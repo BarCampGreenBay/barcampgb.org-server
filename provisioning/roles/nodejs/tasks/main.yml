@@ -11,8 +11,11 @@
 - name: Install node-dev for easy development
   npm: name=node-dev state=present global=yes
 
+- name: Install bower
+  npm: name=bower state=present global=yes
+
 - name: Ensure nodejs group exists
   group: name=nodejs state=present system=yes
 
 - name: Ensure nodejs user exists
-  user: name=nodejs group=nodejs createhome=no shell=/bin/false system=yes state=present
+  user: name=nodejs group=nodejs shell=/bin/false system=yes state=present

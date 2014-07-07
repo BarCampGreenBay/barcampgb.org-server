@@ -3,13 +3,17 @@
   apt: name=git state=present
 
 - name: Create app directory
-  file: path={{ app_path }} owner=nodejs group=nodejs
+  file: path={{ app_path }} owner=nodejs group=nodejs state=directory
 
 - name: Pull app code
   git: repo={{ app_repo }} dest={{ app_path }} accept_hostkey=yes
-  remote_user: nodejs
-  sudo: no
+  sudo_user: nodejs
 
 - name: Install node app dependencies
   npm: path={{ app_path }}
   notify: restart nodejs-service
+  sudo_user: nodejs
+
+- name: Install bower dependencies
+  command: bower install --allow-root chdir={{ app_path }}
+  sudo_user: nodejs
