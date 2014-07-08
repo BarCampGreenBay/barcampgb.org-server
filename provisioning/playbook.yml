@@ -20,6 +20,8 @@
 
   roles:
 
+  - role: mongo_mongod
+
   - role: nodejs-app
 
   - role: nodejs-service
