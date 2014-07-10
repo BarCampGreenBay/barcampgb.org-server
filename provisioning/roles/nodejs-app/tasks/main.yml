@@ -4,10 +4,12 @@
 
 - name: Create app directory
   file: path={{ app_path }} owner=nodejs group=nodejs state=directory
+  when: node_env == 'production'
 
 - name: Pull app code
   git: repo={{ app_repo }} dest={{ app_path }} accept_hostkey=yes
   sudo_user: nodejs
+  when: node_env == 'production'
 
 - name: Install node app dependencies
   npm: path={{ app_path }}

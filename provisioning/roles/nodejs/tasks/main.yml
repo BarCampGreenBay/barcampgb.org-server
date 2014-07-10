@@ -11,9 +11,6 @@
 - name: Update npm
   npm: name=npm state=latest global=yes
 
-- name: Install node-dev for easy development
-  npm: name=node-dev state=present global=yes
-
 - name: Install bower
   npm: name=bower state=present global=yes
 
