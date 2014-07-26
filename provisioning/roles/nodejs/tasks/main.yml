@@ -9,7 +9,7 @@
   apt: name=npm state=present
 
 - name: Update npm
-  npm: name=npm state=latest global=yes
+  command: npm update -gf npm
 
 - name: Install bower
   npm: name=bower state=present global=yes
