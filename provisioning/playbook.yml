@@ -5,31 +5,18 @@
   vars:
     app_path: /var/www/barcampgb.org
     app_repo: https://github.com/BarCampGreenBay/barcampgb.org.git
-    api:
-      service: bcgb-api
-      description: BarCamp Green Bay api server
-      path: src/api
-      script: server.js
-      port: 8000
     web:
       service: bcgb-web
       description: BarCamp Green Bay web server
       path: src/web
       script: server.js
-      port: 8002
+      port: 8000
 
   roles:
 
   - role: mongo_mongod
 
   - role: nodejs-app
-
-  - role: nodejs-service
-    service: "{{ api.service }}"
-    description: "{{ api.description }}"
-    service_app_path: "{{ app_path }}/{{ api.path }}"
-    script_path: "{{ service_app_path }}/{{ api.script }}"
-    port: "{{ api.port }}"
 
   - role: nodejs-service
     service: "{{ web.service }}"
@@ -46,10 +33,6 @@
         - root {{ app_path }}
         - location / {
             proxy_pass http://127.0.0.1:{{ web.port }};
-          }
-        - location /api {
-            rewrite /api/(.*) /$1  break;
-            proxy_pass http://127.0.0.1:{{ api.port }};
           }
     nginx_configs:
       proxy:

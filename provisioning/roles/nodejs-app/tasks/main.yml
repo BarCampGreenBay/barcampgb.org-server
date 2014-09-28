@@ -1,20 +1,32 @@
 ---
+- name: Install g++ for compiling native modules
+  apt: name=build-essential state=present
+
+- name: Install bower
+  npm: name=bower state=present global=yes
+
+- name: Ensure {{ node_sudo_user }} group exists
+  group: name={{ node_sudo_user }} state=present system=yes
+
+- name: Ensure {{ node_sudo_user }} user exists
+  user: name={{ node_sudo_user }} group={{ node_sudo_user }} shell=/bin/false system=yes state=present
+
 - name: Install git to pull app code
   apt: name=git state=present
 
 - name: Create app directory
-  file: path={{ app_path }} owner=nodejs group=nodejs state=directory
+  file: path={{ app_path }} owner={{ node_sudo_user }} group={{ node_sudo_user }} state=directory
   when: node_env == 'production'
 
 - name: Pull app code
   git: repo={{ app_repo }} dest={{ app_path }} accept_hostkey=yes
-  sudo_user: nodejs
+  sudo_user: "{{ node_sudo_user }}"
   when: node_env == 'production'
 
 - name: Install node app dependencies
   npm: path={{ app_path }}
   notify: restart nodejs-service
-  sudo_user: nodejs
+  sudo_user: "{{ node_sudo_user }}"
 
 - name: Stat bower.json
   stat: path={{ app_path }}/bower.json
@@ -22,5 +34,5 @@
 
 - name: Install bower dependencies
   command: bower install --allow-root chdir={{ app_path }}
-  sudo_user: nodejs
+  sudo_user: "{{ node_sudo_user }}"
   when: bower_json.stat.exists
