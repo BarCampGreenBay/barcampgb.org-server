@@ -1,7 +1,7 @@
 BarCamp Green Bay Server
 ========================
 
-BarCamp Green Bay server privisioning code.
+BarCamp Green Bay server provisioning code.
 
 ## Installation
 
@@ -14,10 +14,9 @@ BarCamp Green Bay server privisioning code.
 ## Planned Architecture
 
 - Ansible for provisioning
-- Docker for deployment
 - Nginx proxy
-- Multiple nodejs processes (web and api)
-- Polymer
+- Node process
+- MongoDB process
 
 ## TODO
 
@@ -26,4 +25,4 @@ BarCamp Green Bay server privisioning code.
 - [x] nginx proxy
 - [x] multiple node processes
 - [x] mongodb management
-- [ ] production deployment/environment with docker
+- [ ] production deployment/environment
