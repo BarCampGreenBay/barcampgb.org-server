@@ -3,7 +3,7 @@ BarCamp Green Bay Server
 
 BarCamp Green Bay server provisioning code.
 
-## Installation
+## Local Deploy
 
 - Clone the source.
 - `vagrant up`
@@ -11,18 +11,28 @@ BarCamp Green Bay server provisioning code.
 - `ifconfig` to grab the ip address
 - load ip address in browser
 
-## Planned Architecture
+## Production Deploy
 
-- Ansible for provisioning
+- in `infrastructure/` run `terraform apply`
+- in `provisioning/` run `ansible-playbook --inventory-file=hosts-prod playbook.yml --extra-vars "node_env=production"`
+
+### Prereqs
+
+- Ansible
+- Terraform
+- set up Google Cloud project and enable Cloud Compute API
+- set up Config
+
+## Config
+
+- copy `infrastructure/terraform.tfvars.example` to `infrastructure/terraform.tfvars`
+- copy `provisioning/secret-vars.yaml.example` to `provisioning/secret-vars.yaml`
+
+## Architecture
+
+- Terraform
+- Ansible
+- Google Compute Engine
 - Nginx proxy
 - Node process
 - MongoDB process
-
-## TODO
-
-- [x] vagrant development environment
-- [x] ansible provisioning
-- [x] nginx proxy
-- [x] multiple node processes
-- [x] mongodb management
-- [ ] production deployment/environment

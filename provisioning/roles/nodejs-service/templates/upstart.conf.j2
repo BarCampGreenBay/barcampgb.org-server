@@ -7,7 +7,9 @@ respawn limit 20 5
 
 script
     echo $$ > /var/run/{{ service }}.pid
-    exec sudo -u {{ node_sudo_user }} NODE_ENV={{ node_env }} NODE_PORT={{ port }} {{ node_path }} {{ script_path }} >> /var/log/nodejs/{{ service }}.log 2>&1
+    exec sudo -u {{ node_sudo_user }} \
+        {% for key, value in env_vars.iteritems() %} {{ key }}={{ value }}{% endfor %} \
+        {{ node_path }} {{ script_path }} >> /var/log/nodejs/{{ service }}.log 2>&1
 end script
 
 pre-start script

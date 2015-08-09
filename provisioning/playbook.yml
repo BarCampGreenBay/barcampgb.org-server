@@ -1,16 +1,20 @@
 ---
 - hosts: web
   gather_facts: yes
-  sudo: yes
+  become: yes
   vars:
     app_path: /var/www/barcampgb.org
     app_repo: https://github.com/BarCampGreenBay/barcampgb.org.git
+    mongod_host: localhost
+    mongod_port: 2700
     web:
       service: bcgb-web
       description: BarCamp Green Bay web server
       path: src/web
       script: server.js
       port: 8000
+  vars_files:
+    - secret-vars.yaml
 
   roles:
 
@@ -23,7 +27,13 @@
     description: "{{ web.description }}"
     service_app_path: "{{ app_path }}/{{ web.path }}"
     script_path: "{{ service_app_path }}/{{ web.script }}"
-    port: "{{ web.port }}"
+    env_vars:
+      NODE_ENV: "{{ node_env }}"
+      NODE_PORT: "{{ web.port }}"
+      MONGOD_HOST: "{{ mongod_host }}"
+      MONGOD_PORT: "{{ mongod_port }}"
+      SMTP_USER: "{{ smtp_user }}"
+      SMTP_PASSWORD: "{{ smtp_password }}"
 
   - role: nginx
     nginx_sites:

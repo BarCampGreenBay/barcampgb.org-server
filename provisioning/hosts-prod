@@ -1,2 +1,9 @@
-[web]
-barcampgb.org
+#! /usr/bin/env bash
+# grab ip from terraform
+HOSTS="[\"$(terraform output -state=../infrastructure/terraform.tfstate ip)\"]"
+VARS='{}'
+if [[ $1 == "--list" ]]; then
+	echo "{ \"web\": { \"hosts\": $HOSTS, \"vars\": $VARS } }"
+else
+	echo "{}"
+fi
