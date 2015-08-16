@@ -19,8 +19,12 @@
   git: repo={{ app_repo }} dest={{ app_path }} accept_hostkey=yes
   become_user: "{{ node_sudo_user }}"
   when: node_env == "production"
+  tags:
+    - update
 
 - name: Install node app dependencies
   npm: path={{ app_path }}
   become_user: "{{ node_sudo_user }}"
   notify: restart nodejs-service
+  tags:
+    - update
