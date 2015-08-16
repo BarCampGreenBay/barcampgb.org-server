@@ -19,6 +19,7 @@
   git: repo={{ app_repo }} dest={{ app_path }} accept_hostkey=yes
   become_user: "{{ node_sudo_user }}"
   when: node_env == "production"
+  notify: restart nodejs-service
   tags:
     - update
 

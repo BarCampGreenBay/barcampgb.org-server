@@ -1,6 +1,7 @@
 ---
 - name: Make upstart template
   template: src=upstart.conf.j2 dest=/etc/init/{{ service }}.conf
+  notify: restart nodejs-service
 
 - name: Start app
   service: name={{ service }} state=started
