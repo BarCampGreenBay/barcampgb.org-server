@@ -32,8 +32,8 @@
       NODE_PORT: "{{ web.port }}"
       MONGOD_HOST: "{{ mongod_host }}"
       MONGOD_PORT: "{{ mongod_port }}"
-      SMTP_USER: "{{ smtp_user }}"
-      SMTP_PASSWORD: "{{ smtp_password }}"
+      MAILGUN_APIKEY: "{{ mailgun_apikey }}"
+      MAILGUN_DOMAIN: "{{ mailgun_domain }}"
 
   - role: nginx
     nginx_sites:
