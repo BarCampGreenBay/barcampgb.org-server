@@ -1,5 +1,6 @@
 description "{{ description }}"
 
+start on (local-filesystems and net-device-up)
 stop on shutdown
 
 respawn
