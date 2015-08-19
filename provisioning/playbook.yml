@@ -13,8 +13,18 @@
       path: src/web
       script: server.js
       port: 8000
+    webhook:
+      port: 9000
+      location: /webhook
+      event: push
+      match: ref =? /master/ && repository.name == barcampgb.org
+      command: cd {{ app_path }} && sudo -u {{ node_sudo_user }} git pull && restart {{ web.service }}
   vars_files:
     - secret-vars.yaml
+
+  tasks:
+  - name: Install github-webhook server
+    npm: name=github-webhook global=yes
 
   roles:
 
@@ -35,12 +45,27 @@
       MAILGUN_APIKEY: "{{ mailgun_apikey }}"
       MAILGUN_DOMAIN: "{{ mailgun_domain }}"
 
+  - role: telusdigital.upstart
+    upstart_script:
+      - exec github-webhook --port={{ webhook.port }} --path={{ webhook.location }} --secret={{ github_secret }} --log=/var/log/github-webhook/webhook.log --rule="{{ webhook.event }}:{{ webhook.match }}:{{ webhook.command }}"
+    upstart_name: github-webhook
+    upstart_start_on:
+      - startup
+    upstart_stop_on:
+      - shutdown
+    tags:
+      - webhook
+
+
   - role: nginx
     nginx_sites:
       default:
         - listen 80
         - server_name barcampgb.org localhost
         - root {{ app_path }}
+        - location {{ webhook.location }} {
+            proxy_pass http://127.0.0.1:{{ webhook.port }};
+          }
         - location / {
             proxy_pass http://127.0.0.1:{{ web.port }};
           }
