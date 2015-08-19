@@ -14,17 +14,15 @@
       script: server.js
       port: 8000
     webhook:
+      service: gh-hook
+      description: GitHub webhook listener that restarts nodejs server on pushes
       port: 9000
       location: /webhook
       event: push
-      match: ref =? /master/ && repository.name == barcampgb.org
+      match: ref == 'refs/heads/master' && repository.name == 'barcampgb.org'
       command: cd {{ app_path }} && sudo -u {{ node_sudo_user }} git pull && restart {{ web.service }}
   vars_files:
     - secret-vars.yaml
-
-  tasks:
-  - name: Install github-webhook server
-    npm: name=github-webhook global=yes
 
   roles:
 
@@ -45,17 +43,17 @@
       MAILGUN_APIKEY: "{{ mailgun_apikey }}"
       MAILGUN_DOMAIN: "{{ mailgun_domain }}"
 
-  - role: telusdigital.upstart
-    upstart_script:
-      - exec github-webhook --port={{ webhook.port }} --path={{ webhook.location }} --secret={{ github_secret }} --log=/var/log/github-webhook/webhook.log --rule="{{ webhook.event }}:{{ webhook.match }}:{{ webhook.command }}"
-    upstart_name: github-webhook
-    upstart_start_on:
-      - startup
-    upstart_stop_on:
-      - shutdown
+  - role: github-webhook
+    service: "{{ webhook.service }}"
+    description: "{{ webhook.description }}"
+    port: "{{ webhook.port }}"
+    location: "{{ webhook.location }}"
+    secret: "{{ github_secret }}"
+    event: "{{ webhook.event }}"
+    match: "{{ webhook.match }}"
+    command: "{{ webhook.command }}"
     tags:
       - webhook
-
 
   - role: nginx
     nginx_sites:

@@ -1,0 +1,10 @@
+---
+- name: Install github-webhook module
+  npm: name=github-webhook global=yes
+
+- name: Make upstart template
+  template: src=upstart.conf.j2 dest=/etc/init/{{ service }}.conf
+  notify: restart github-webhook
+
+- name: Start server
+  service: name={{ service }} state=started
