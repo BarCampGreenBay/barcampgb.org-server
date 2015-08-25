@@ -14,7 +14,7 @@ BarCamp Green Bay server provisioning code.
 ## Production Deploy
 
 - in `infrastructure/` run `terraform apply`
-- in `provisioning/` run `ansible-playbook --inventory-file=hosts-prod playbook.yml --extra-vars "node_env=production"`
+- in `provisioning/` run `ansible-playbook --inventory-file=hosts-prod playbook.yml`
 
 ### Prereqs
 

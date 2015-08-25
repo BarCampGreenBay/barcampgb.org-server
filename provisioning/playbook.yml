@@ -5,8 +5,10 @@
   vars:
     app_path: /var/www/barcampgb.org
     app_repo: https://github.com/BarCampGreenBay/barcampgb.org.git
+    hostname: barcampgb.org
     mongod_host: localhost
     mongod_port: 2700
+    node_env: production
     web:
       service: bcgb-web
       description: BarCamp Green Bay web server
@@ -59,7 +61,7 @@
     nginx_sites:
       default:
         - listen 80
-        - server_name barcampgb.org localhost
+        - server_name www.{{ hostname }}
         - root {{ app_path }}
         - location {{ webhook.location }} {
             proxy_pass http://127.0.0.1:{{ webhook.port }};
@@ -67,6 +69,9 @@
         - location / {
             proxy_pass http://127.0.0.1:{{ web.port }};
           }
+      redirect:
+          - server_name {{ hostname }}
+          - return 301 $scheme://www.{{ hostname }}$request_uri
     nginx_configs:
       proxy:
         - proxy_set_header X-Real-IP $remote_addr
@@ -77,3 +82,5 @@
         - proxy_http_version 1.1
         - proxy_set_header Upgrade $http_upgrade
         - proxy_set_header Connection "upgrade"
+    tags:
+      - nginx

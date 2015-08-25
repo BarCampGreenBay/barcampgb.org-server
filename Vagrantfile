@@ -7,6 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "chef/ubuntu-14.04"
+  config.vm.hostname = "barcampgb.local"
   config.vm.network "private_network", type: "dhcp"
   if File.exist?("../barcampgb.org")
     config.vm.synced_folder "../barcampgb.org", "/var/www/barcampgb.org", type: 'nfs'
