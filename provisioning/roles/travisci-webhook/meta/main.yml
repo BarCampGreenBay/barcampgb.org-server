@@ -1,0 +1,4 @@
+---
+dependencies:
+  - nodesource.node
+allow_duplicates: yes

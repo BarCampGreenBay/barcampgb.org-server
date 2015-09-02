@@ -16,12 +16,12 @@
       script: server.js
       port: 8000
     webhook:
-      service: gh-hook
-      description: GitHub webhook listener that restarts nodejs server on pushes
+      service: travis-hook
+      description: Travis CI webhook listener that updates nodejs server on successful tests
       port: 9000
       location: /webhook
-      event: push
-      match: ref == 'refs/heads/master' && repository.name == 'barcampgb.org'
+      event: success
+      match: branch == 'master' && repository.name == 'barcampgb.org'
       command: cd {{ app_path }} && sudo -u {{ node_sudo_user }} git pull && restart {{ web.service }}
   vars_files:
     - secret-vars.yaml
@@ -31,6 +31,8 @@
   - role: mongo_mongod
 
   - role: nodejs-app
+    tags:
+      - app
 
   - role: nodejs-service
     service: "{{ web.service }}"
@@ -44,13 +46,15 @@
       MONGOD_PORT: "{{ mongod_port }}"
       MAILGUN_APIKEY: "{{ mailgun_apikey }}"
       MAILGUN_DOMAIN: "{{ mailgun_domain }}"
+    tags:
+      - service
 
-  - role: github-webhook
+  - role: travisci-webhook
     service: "{{ webhook.service }}"
     description: "{{ webhook.description }}"
     port: "{{ webhook.port }}"
     location: "{{ webhook.location }}"
-    secret: "{{ github_secret }}"
+    token: "{{ travis_user_token }}"
     event: "{{ webhook.event }}"
     match: "{{ webhook.match }}"
     command: "{{ webhook.command }}"
