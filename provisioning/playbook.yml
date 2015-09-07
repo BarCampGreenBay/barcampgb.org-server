@@ -15,6 +15,7 @@
       path: src/web
       script: server.js
       port: 8000
+      error500: /src/web/assets/500.html
     webhook:
       service: travis-hook
       description: Travis CI webhook listener that updates nodejs server on successful tests
@@ -73,10 +74,13 @@
         - location / {
             proxy_pass http://127.0.0.1:{{ web.port }};
           }
+        - location {{ web.error500 }} {}
       redirect:
           - server_name {{ hostname }}
           - return 301 $scheme://www.{{ hostname }}$request_uri
     nginx_configs:
+      error_pages:
+        - error_page 500 502 503 504 {{ web.error500 }}
       proxy:
         - proxy_set_header X-Real-IP $remote_addr
         - proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for
