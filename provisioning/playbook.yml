@@ -22,7 +22,7 @@
       location: /webhook
       event: success
       match: branch == 'master' && repository.name == 'barcampgb.org'
-      command: cd {{ app_path }} && sudo -u {{ node_sudo_user }} git pull && restart {{ web.service }}
+      command: stop {{ web.service }} && sudo -u {{ node_sudo_user }} git -C {{ app_path }} pull && start {{ web.service }}
   vars_files:
     - secret-vars.yaml
 
