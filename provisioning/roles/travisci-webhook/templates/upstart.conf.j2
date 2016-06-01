@@ -8,7 +8,7 @@ respawn limit 20 5
 
 script
     echo $$ > /var/run/{{ service }}.pid
-    exec travisci-webhook --port={{ port }} --path={{ location }} --token={{ token }} --log=/var/log/nodejs/{{ service }}.log --rule [ --event={{ event }} --match="{{ match }}" --exec="{{ command }}" ]
+    exec travisci-webhook --port={{ listen_port }} --path={{ location }} --token={{ token }} --log=/var/log/nodejs/{{ service }}.log --rule [ --event={{ event }} --match="{{ match }}" --exec="{{ command }}" ]
 end script
 
 pre-start script

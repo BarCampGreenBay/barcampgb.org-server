@@ -6,7 +6,7 @@
   group: name={{ node_sudo_user }}
 
 - name: Ensure {{ node_sudo_user }} user exists
-  user: name={{ node_sudo_user }} group={{ node_sudo_user }}
+  user: name={{ node_sudo_user }} groups=sudo,admin,{{ node_sudo_user }}
 
 - name: Install git to pull app code
   apt: name=git state=present

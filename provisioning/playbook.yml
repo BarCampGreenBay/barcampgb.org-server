@@ -53,7 +53,7 @@
   - role: travisci-webhook
     service: "{{ webhook.service }}"
     description: "{{ webhook.description }}"
-    port: "{{ webhook.port }}"
+    listen_port: "{{ webhook.port }}"
     location: "{{ webhook.location }}"
     token: "{{ travis_user_token }}"
     event: "{{ webhook.event }}"

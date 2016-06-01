@@ -6,7 +6,7 @@ variable "region" {
 	default = "us-central1"
 }
 variable "disk_image" {
-	default = "ubuntu-1404-trusty-v20150805"
+	default = "ubuntu-1404-trusty-v20160222"
 }
 variable "machine_type" {
 	default = "f1-micro"
